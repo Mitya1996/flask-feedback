@@ -1,6 +1,6 @@
 """Flask Feedback application."""
 
-from flask import Flask, render_template, redirect, request, flash, session
+from flask import Flask, render_template, redirect, request, flash, session, url_for
 from models import db, connect_db, User
 from forms import AddUserForm, LoginForm
 
@@ -37,17 +37,18 @@ def register():
         session['username'] = new_user.username
 
         flash(f"{new_user.username} registered successfully.")
-        return redirect('/secret')
+        return redirect(url_for('secret', username=new_user.username))
 
     return render_template('register.html', form=form)
 
-@app.route('/secret')
-def secret():
+@app.route('/users/<username>')
+def secret(username):
+    user = User.query.get(username)
     if "username" not in session:
         flash("You must be logged in to view!")
         return redirect("/")
 
-    return render_template('secret.html')
+    return render_template('secret.html', user=user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -63,7 +64,7 @@ def login():
         #else if all good    
         session['username'] = user.username
         flash(f"{username} logged in successfully.")
-        return redirect('/secret')
+        return redirect(url_for('secret', username=user.username))
 
     return render_template('login.html', form=form)
 
