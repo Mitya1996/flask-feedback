@@ -20,20 +20,25 @@ class User(db.Model):
     username = db.Column(
         db.String(20),
         primary_key=True,
-        unique=True)
+        unique=True
+        )
     password = db.Column(
         db.Text,
-        nullable=False)
+        nullable=False
+        )
     email = db.Column(
         db.String(50),
         nullable=False,
-        unique=True)
+        unique=True
+        )
     first_name = db.Column(
         db.String(30),
-        nullable=False)
+        nullable=False
+        )
     last_name = db.Column(
         db.String(30),
-        nullable=False)
+        nullable=False
+        )
 
     @classmethod
     def register(cls, username, password, email, first_name, last_name):
@@ -60,3 +65,32 @@ class User(db.Model):
             return u
         else:
             return False
+
+
+    class Feedback(db.Model):
+        """Feedback."""
+
+        __tablename__ = "feedback"
+
+        # id - a unique primary key that is an auto incrementing integer
+        id = db.Column(
+            db.Integer,
+            auto_incrementing=True,
+            unique=True,
+            primary_key=True
+        )
+        # title - a not-nullable column that is at most 100 characters
+        title = db.Column(
+            db.String(100),
+            nullable=False
+        )
+        # content - a not-nullable column that is text
+        content = db.Column(
+            db.Text,
+            nullable=False
+        )
+        # username - a foreign key that references the username column in the users table
+        username = db.Column(
+            db.String(20),
+            db.ForeignKey('users.username', ondelete='CASCADE')
+            )
