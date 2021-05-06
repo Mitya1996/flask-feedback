@@ -1,9 +1,8 @@
 """Flask Feedback application."""
 
-from flask import Flask, render_template, redirect, request, flash
+from flask import Flask, render_template, redirect, request, flash, session
 from models import db, connect_db, User
 from forms import AddUserForm, LoginForm
-import bcrypt
 
 app = Flask(__name__)
 
@@ -35,6 +34,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        session['username'] = new_user.username
+
         flash(f"{new_user.username} registered successfully.")
         return redirect('/secret')
 
@@ -55,6 +56,8 @@ def login():
         if not user:
             flash("Invalid credentials.")
             return redirect('/login')
+        #else if all good    
+        session['username'] = new_user.username
         flash(f"{username} logged in successfully.")
         return redirect('/secret')
 

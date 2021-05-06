@@ -3,11 +3,14 @@
         <li class="nav-item">
         <a class="nav-link" href="/"><h1 class="css-rainbow-text">Flask Feedback</h1></a>
         </li>
+        {% if 'username' in session %}
         <li class="nav-item float-end">
-        <a class="nav-link text-dark" href="/login">Login</a>
+            <a class="nav-link text-dark" href="/login">Login</a>
         </li>
+        {% else %}
         <li class="nav-item">
-            <a class="nav-link text-dark" href="/"></a>
+            <a class="nav-link text-dark" href="/logout">Logout</a>
         </li>
+        {% endif %}
     </ul>
 </div>
