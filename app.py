@@ -43,6 +43,10 @@ def register():
 
 @app.route('/secret')
 def secret():
+    if "username" not in session:
+        flash("You must be logged in to view!")
+        return redirect("/")
+
     return render_template('secret.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -57,8 +61,16 @@ def login():
             flash("Invalid credentials.")
             return redirect('/login')
         #else if all good    
-        session['username'] = new_user.username
+        session['username'] = user.username
         flash(f"{username} logged in successfully.")
         return redirect('/secret')
 
     return render_template('login.html', form=form)
+
+@app.route("/logout")
+def logout():
+    """Logs user out and redirects to homepage."""
+
+    session.pop("username")
+
+    return redirect("/")
