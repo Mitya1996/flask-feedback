@@ -36,8 +36,8 @@ class LoginForm(ModelForm):
     password = PasswordField("Password",
         validators=[InputRequired()])
 
-class NewFeedbackForm(ModelForm):
-    """Form for new feedback."""
+class FeedbackForm(ModelForm):
+    """Form for feedback."""
     title = StringField("Title",
         validators=[InputRequired(), Length(max=100)])
     content = TextAreaField("Content",
