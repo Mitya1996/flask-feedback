@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms_alchemy import model_form_factory, Unique
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, TextAreaField
 from wtforms.validators import InputRequired, NumberRange, Length
 # The variable db here is a SQLAlchemy object instance from
 # Flask-SQLAlchemy package
@@ -35,6 +35,14 @@ class LoginForm(ModelForm):
         validators=[InputRequired()])
     password = PasswordField("Password",
         validators=[InputRequired()])
+
+class NewFeedbackForm(ModelForm):
+    """Form for new feedback."""
+    title = StringField("Title",
+        validators=[InputRequired(), Length(max=100)])
+    content = TextAreaField("Content",
+        validators=[InputRequired()])
+
 
 
 

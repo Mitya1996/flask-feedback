@@ -1,8 +1,8 @@
 """Flask Feedback application."""
 
 from flask import Flask, render_template, redirect, request, flash, session, url_for
-from models import db, connect_db, User
-from forms import AddUserForm, LoginForm
+from models import db, connect_db, User, Feedback
+from forms import AddUserForm, LoginForm, NewFeedbackForm
 
 app = Flask(__name__)
 
@@ -45,8 +45,11 @@ def register():
 def secret(username):
     user = User.query.get(username)
     if "username" not in session:
-        flash("You must be logged in to view!")
+        flash("You must be logged in to view this page.")
         return redirect("/")
+    if session['username'] != user.username:
+        flash("You are unauthorized to view this page.")
+        return redirect(f'/users/{username}')
 
     return render_template('secret.html', user=user)
 
@@ -75,3 +78,18 @@ def logout():
     session.pop("username")
 
     return redirect("/")
+
+
+@app.route("/users/<username>/feedback/add", methods=['GET', 'POST'])
+def add_feedback(username):
+    """Add new feedback for given user."""
+    form = NewFeedbackForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        new_feedback = Feedback(title=title, content=content, username=username)
+        db.session.add(new_feedback)
+        db.session.commit()
+        flash(f"Feedback added successfully.")
+        return redirect(f'/users/{username}')
+    return render_template('new-feedback.html', username=username, form=form)

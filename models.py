@@ -67,30 +67,32 @@ class User(db.Model):
             return False
 
 
-    class Feedback(db.Model):
-        """Feedback."""
+class Feedback(db.Model):
+    """Feedback."""
 
-        __tablename__ = "feedback"
+    __tablename__ = "feedback"
 
-        # id - a unique primary key that is an auto incrementing integer
-        id = db.Column(
-            db.Integer,
-            auto_incrementing=True,
-            unique=True,
-            primary_key=True
+    # id - a unique primary key that is an auto incrementing integer
+    id = db.Column(
+        db.Integer,
+        auto_incrementing=True,
+        unique=True,
+        primary_key=True
+    )
+    # title - a not-nullable column that is at most 100 characters
+    title = db.Column(
+        db.String(100),
+        nullable=False
+    )
+    # content - a not-nullable column that is text
+    content = db.Column(
+        db.Text,
+        nullable=False
+    )
+    # username - a foreign key that references the username column in the users table
+    username = db.Column(
+        db.String(20),
+        db.ForeignKey('users.username', ondelete='CASCADE')
         )
-        # title - a not-nullable column that is at most 100 characters
-        title = db.Column(
-            db.String(100),
-            nullable=False
-        )
-        # content - a not-nullable column that is text
-        content = db.Column(
-            db.Text,
-            nullable=False
-        )
-        # username - a foreign key that references the username column in the users table
-        username = db.Column(
-            db.String(20),
-            db.ForeignKey('users.username', ondelete='CASCADE')
-            )
+
+    user = db.relationship('User', backref='feedback')

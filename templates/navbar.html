@@ -9,6 +9,9 @@
         </li>
         {% else %}
         <li class="nav-item">
+            <a class="nav-link text-dark" href="/users/{{session['username']}}">{{session['username']}}</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-dark" href="/logout">Logout</a>
         </li>
         {% endif %}
