@@ -4,9 +4,11 @@
 
 {% block content %}
 
-<h1 class="my-3">Register New User</h1>
-
 {% include 'flash-alerts.html' %}
+
+{% if 'username' not in session %}
+
+<h1 class="my-3">Register New User</h1>
 
 <form action="/register" method="POST">
     {{ form.hidden_tag() }} <!--add type=hidden form fields -->
@@ -23,6 +25,8 @@
     {% endfor %}
     <button class="btn btn-primary">Submit</button>
 </form>
+
+{% endif %}
 
 {% endblock %}
 

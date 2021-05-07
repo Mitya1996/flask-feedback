@@ -3,6 +3,7 @@
 from flask import Flask, render_template, redirect, request, flash, session, url_for
 from models import db, connect_db, User, Feedback
 from forms import AddUserForm, LoginForm, FeedbackForm
+from werkzeug.exceptions import Unauthorized
 
 app = Flask(__name__)
 
@@ -56,6 +57,9 @@ def secret(username):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if "username" in session:
+        flash("you are already logged in")
+        return redirect("/")
     form = LoginForm()
     if form.validate_on_submit():
 

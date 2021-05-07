@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms_alchemy import model_form_factory, Unique
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import InputRequired, NumberRange, Length
+from wtforms.validators import InputRequired, NumberRange, Length, Email
 # The variable db here is a SQLAlchemy object instance from
 # Flask-SQLAlchemy package
 from models import db, User
@@ -21,7 +21,7 @@ class AddUserForm(ModelForm):
     password = PasswordField("Password",
         validators=[InputRequired()])
     email = StringField("Email",
-        validators=[InputRequired(), Unique(User.email), Length(max=50)])
+        validators=[InputRequired(), Unique(User.email), Length(max=50), Email()])
     first_name = StringField("First Name",
         validators=[InputRequired(), Length(max=30)])
     last_name = StringField("Last Name",
